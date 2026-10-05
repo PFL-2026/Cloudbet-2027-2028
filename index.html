@@ -349,6 +349,178 @@ body:not(.editing) .edit-only { display: none !important; }
   .channel-wide ul { columns: 1; }
   .tabs { overflow-x: auto; }
 }
+
+/* Activations — headline cards */
+.act-cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px; margin: 0 0 8px;
+}
+.act-card {
+  display: flex; flex-direction: column; text-align: left; padding: 0;
+  font: inherit; color: var(--ink); cursor: pointer; overflow: hidden;
+  background: #fff; border: 1px solid var(--hair); border-top: 3px solid var(--brand);
+  border-radius: 3px; transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.act-card:hover, .act-card:focus-visible {
+  transform: translateY(-2px); box-shadow: 0 10px 26px rgba(16,24,40,0.12); outline: none;
+}
+.act-thumb {
+  aspect-ratio: 16 / 9; background: #f2f3f6 center / cover no-repeat;
+  display: flex; align-items: center; justify-content: center;
+}
+.act-thumb.has-img { background-color: #0e1014; }
+.act-thumb-num {
+  font-family: 'Oswald', Impact, sans-serif; font-weight: 700; font-size: 44px;
+  color: var(--hair); line-height: 1;
+}
+.act-card-body { flex: 1; display: flex; flex-direction: column; padding: 12px 14px 14px; }
+.act-card-num {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand);
+}
+.act-card-title {
+  font-family: 'Oswald', Impact, sans-serif; font-weight: 700; font-size: 17px;
+  letter-spacing: 0.03em; text-transform: uppercase; margin: 2px 0 8px; line-height: 1.2;
+}
+.act-card-meta {
+  margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  white-space: nowrap;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.act-card-meta .go { color: var(--brand); font-weight: 600; }
+.act-print-empty { display: none; }
+
+/* Activations — full-screen gallery pop-up */
+body.modal-open { overflow: hidden; }
+.act-modal {
+  display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(10,12,16,0.78); padding: 24px;
+}
+.act-modal.open { display: flex; justify-content: center; }
+.act-box {
+  background: #fff; width: 100%; max-width: 1280px; border-radius: 4px;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.4);
+}
+.act-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 22px 28px 16px; border-bottom: 3px solid var(--brand);
+}
+.act-kicker {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--brand);
+}
+.act-title {
+  font-family: 'Oswald', Impact, sans-serif; font-weight: 700; font-size: 30px;
+  letter-spacing: 0.01em; text-transform: uppercase; margin: 2px 0 0; line-height: 1.15;
+}
+.act-close {
+  flex: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--hair); background: #fff; color: var(--ink);
+  font-size: 26px; line-height: 1; transition: border-color 0.15s, color 0.15s;
+}
+.act-close:hover { border-color: var(--brand); color: var(--brand); }
+.act-body { flex: 1; overflow: auto; padding: 24px 28px 32px; }
+.act-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+/* One image slot: picture fills the frame, its name sits bottom-centre */
+.act-shot {
+  position: relative; margin: 0; aspect-ratio: 16 / 9; overflow: hidden;
+  border-radius: 3px; background: #0e1014;
+}
+.act-frame { position: absolute; inset: 0; }
+.act-frame img {
+  width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in;
+}
+.act-frame img:not([src]) { display: none; }
+.act-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 34px 18px 12px; text-align: center; color: #fff;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0));
+}
+.act-shot.is-empty { background: #f6f7f9; outline: 2px dashed var(--hair); outline-offset: -2px; }
+.act-shot.is-empty .act-cap { color: var(--muted); background: none; }
+body:not(.editing) .act-shot.is-empty { display: none; }
+.act-drop {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted); cursor: pointer;
+}
+.act-shot:not(.is-empty) .act-drop { display: none; }
+.act-shot.drag-over { outline: 3px solid var(--brand); outline-offset: -3px; }
+.act-tools { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; gap: 6px; }
+.act-tools button, .act-add {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+  padding: 6px 10px; border-radius: 3px; border: 1px solid var(--hair);
+  background: rgba(255,255,255,0.94); color: var(--ink);
+}
+.act-tools button:hover, .act-add:hover { border-color: var(--brand); color: var(--brand); }
+.act-shot.is-empty .when-filled, .act-shot:not(.is-empty) .when-empty { display: none; }
+.act-add {
+  aspect-ratio: 16 / 9; font-size: 13px; background: transparent;
+  border: 2px dashed var(--hair); color: var(--muted);
+}
+.act-empty-note {
+  display: none; color: var(--muted); font-size: 14px; margin: 6px 0 0;
+}
+body:not(.editing) .act-modal:not(.has-images) .act-empty-note { display: block; }
+
+/* Full-screen image viewer */
+.lb { display: none; position: fixed; inset: 0; z-index: 200; background: #050608; }
+.lb.open { display: block; }
+.lb-stage {
+  position: absolute; inset: 0; padding: 60px 84px 76px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lb-img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.lb-cap {
+  position: absolute; left: 0; right: 0; bottom: 26px; text-align: center; color: #fff;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 17px;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 0 24px;
+}
+.lb-count {
+  position: absolute; top: 22px; left: 26px; color: rgba(255,255,255,0.7);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 0.14em;
+}
+.lb button {
+  position: absolute; z-index: 2; cursor: pointer; color: #fff;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50%; width: 48px; height: 48px; font-size: 28px; line-height: 1;
+}
+.lb button:hover { background: rgba(255,255,255,0.2); }
+.lb-close { top: 14px; right: 18px; }
+.lb-prev { left: 18px; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 18px; top: 50%; transform: translateY(-50%); }
+.lb.single .lb-prev, .lb.single .lb-next { display: none; }
+
+@media (max-width: 720px) {
+  .act-modal { padding: 0; }
+  .act-box { border-radius: 0; }
+  .act-grid { grid-template-columns: 1fr; }
+  .act-head, .act-body { padding-left: 18px; padding-right: 18px; }
+  .lb-stage { padding: 60px 12px 76px; }
+}
+
+/* PDF of the Activations tab: every activation with images, laid out inline */
+@media print {
+  .act-cards, .act-close, .act-add, .act-tools, .act-drop, .act-empty-note, .lb { display: none !important; }
+  .panel[data-tab="activations"].act-none .act-print-empty { display: block; color: var(--muted); }
+  .act-modal { display: block !important; position: static; background: none; padding: 0; }
+  .act-modal:not(.has-images), .act-shot.is-empty { display: none !important; }
+  .act-box { display: block; max-width: none; box-shadow: none; border-radius: 0; overflow: visible; }
+  .act-head { padding: 0 0 5px; border-bottom-width: 2px; margin-top: 12px; break-after: avoid; }
+  .act-kicker { font-size: 7.4pt; }
+  .act-title { font-size: 13pt; }
+  .act-body { overflow: visible; padding: 8px 0 10px; }
+  .act-grid { gap: 8px; }
+  .act-shot { break-inside: avoid; }
+  .act-cap { font-size: 8pt; padding: 18px 8px 6px; }
+  body.modal-open { overflow: visible; }
+}
 </style>
 </head>
 <body>
@@ -377,6 +549,7 @@ body:not(.editing) .edit-only { display: none !important; }
   <div class="tabs no-print" role="tablist">
     <button type="button" class="tab" data-tab="audience" role="tab" aria-selected="true">Audience Demographics</button>
     <button type="button" class="tab" data-tab="commercials" role="tab" aria-selected="false">Commercials</button>
+    <button type="button" class="tab" data-tab="activations" role="tab" aria-selected="false">Activations</button>
   </div>
 
   <section class="panel is-active" data-tab="audience">
@@ -788,6 +961,478 @@ body:not(.editing) .edit-only { display: none !important; }
       </section>
   </section>
 
+  <section class="panel" data-tab="activations">
+    <div class="panel-head">
+      <h1>Partnership <span>Activations</span></h1>
+      <div class="standfirst">Select an activation to view it in situ.</div>
+    </div>
+    <div class="act-cards" contenteditable="false"></div>
+    <p class="act-print-empty">Activation visuals to follow.</p>
+
+    <div class="act-modal" id="act-broadcast" role="dialog" aria-modal="true" aria-labelledby="act-broadcast-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 01</div>
+            <h2 class="act-title" id="act-broadcast-title">Broadcast Integrations</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="broadcast-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Broadcast Integrations</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="broadcast-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Broadcast Integrations</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="broadcast-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Broadcast Integrations</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="broadcast-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Broadcast Integrations</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="act-modal" id="act-overlay" role="dialog" aria-modal="true" aria-labelledby="act-overlay-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 02</div>
+            <h2 class="act-title" id="act-overlay-title">Virtual Overlay</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="overlay-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Virtual Overlay</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="overlay-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Virtual Overlay</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="overlay-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Virtual Overlay</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="overlay-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Virtual Overlay</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="act-modal" id="act-arena" role="dialog" aria-modal="true" aria-labelledby="act-arena-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 03</div>
+            <h2 class="act-title" id="act-arena-title">In-Arena Branding</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="arena-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">In-Arena Branding</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="arena-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">In-Arena Branding</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="arena-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">In-Arena Branding</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="arena-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">In-Arena Branding</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="act-modal" id="act-social" role="dialog" aria-modal="true" aria-labelledby="act-social-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 04</div>
+            <h2 class="act-title" id="act-social-title">Social Content</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="social-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Social Content</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="social-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Social Content</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="social-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Social Content</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="social-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Social Content</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="act-modal" id="act-watchbet" role="dialog" aria-modal="true" aria-labelledby="act-watchbet-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 05</div>
+            <h2 class="act-title" id="act-watchbet-title">Watch + Bet Streaming</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="watchbet-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Watch + Bet Streaming</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="watchbet-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Watch + Bet Streaming</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="watchbet-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Watch + Bet Streaming</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="watchbet-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Watch + Bet Streaming</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="act-modal" id="act-ambassadors" role="dialog" aria-modal="true" aria-labelledby="act-ambassadors-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 06</div>
+            <h2 class="act-title" id="act-ambassadors-title">Athlete Ambassadors</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="ambassadors-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Athlete Ambassadors</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="ambassadors-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Athlete Ambassadors</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="ambassadors-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Athlete Ambassadors</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="ambassadors-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Athlete Ambassadors</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="act-modal" id="act-merch" role="dialog" aria-modal="true" aria-labelledby="act-merch-title">
+      <div class="act-box">
+        <div class="act-head">
+          <div>
+            <div class="act-kicker" contenteditable="false">Activation 07</div>
+            <h2 class="act-title" id="act-merch-title">Co-Branded Merch</h2>
+          </div>
+          <button type="button" class="act-close" contenteditable="false" aria-label="Close">&times;</button>
+        </div>
+        <div class="act-body">
+          <div class="act-grid">
+          <figure class="act-shot is-empty" data-shot="merch-1">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Co-Branded Merch</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="merch-2">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Co-Branded Merch</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="merch-3">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Co-Branded Merch</figcaption>
+          </figure>
+          <figure class="act-shot is-empty" data-shot="merch-4">
+            <div class="act-frame" contenteditable="false">
+              <div class="act-drop edit-only">Click or drop an image</div>
+              <div class="act-tools edit-only">
+                <button type="button" data-do="pick" class="when-empty">Add image</button>
+                <button type="button" data-do="pick" class="when-filled">Replace</button>
+                <button type="button" data-do="remove-img" class="when-filled">Remove image</button>
+                <button type="button" data-do="remove-slot">Delete slot</button>
+              </div>
+            </div>
+            <figcaption class="act-cap">Co-Branded Merch</figcaption>
+          </figure>
+            <button type="button" class="act-add edit-only" contenteditable="false">+ Add image slot</button>
+          </div>
+          <p class="act-empty-note" contenteditable="false">Visuals to follow.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
   <div class="foot">
     <div>MVP × Cloudbet · Heads of Terms</div>
     <div><br></div>
@@ -795,10 +1440,22 @@ body:not(.editing) .edit-only { display: none !important; }
 
 </div>
 
+
+<input type="file" id="actFile" accept="image/*" hidden>
+<div class="lb no-print" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lb-count"></div>
+  <button type="button" class="lb-close" aria-label="Close">&times;</button>
+  <button type="button" class="lb-prev" aria-label="Previous image">&#8249;</button>
+  <div class="lb-stage"><img class="lb-img" alt=""></div>
+  <button type="button" class="lb-next" aria-label="Next image">&#8250;</button>
+  <div class="lb-cap"></div>
+</div>
+
 <script>
 (function () {
-  var BUILD = "dmuh3a0j8";
+  var BUILD = "c27b48428f6";
   var KEY = 'mvp-cloudbet-doc-v1';
+  var IDBNAME = KEY + ':images';
   var sheet = document.getElementById('sheet');
   var flag = document.getElementById('savedFlag');
 
@@ -844,6 +1501,7 @@ body:not(.editing) .edit-only { display: none !important; }
       sheet.innerHTML = saved.html;
     } else if (saved) {
       localStorage.removeItem(KEY);   // edits from an older build
+      try { indexedDB.deleteDatabase(IDBNAME); } catch (e2) {}
     }
   } catch (e) { /* first run, or storage blocked — show the original */ }
   lockImages();
@@ -851,17 +1509,35 @@ body:not(.editing) .edit-only { display: none !important; }
   try { startEditing = sessionStorage.getItem(MODEKEY) === '1'; } catch (e) {}
   setEditing(startEditing);
 
+  // Runtime-only state (pop-ups open, drawn cards) never goes into a save or
+  // a download.
+  function stripRuntime(root) {
+    var cards = root.querySelector('.act-cards'); if (cards) cards.innerHTML = '';
+    Array.prototype.forEach.call(root.querySelectorAll('.act-modal.open, .drag-over'), function (el) {
+      el.classList.remove('open'); el.classList.remove('drag-over');
+    });
+  }
+  // Saved text keeps a placeholder for photos added while editing; the
+  // photos themselves sit in IndexedDB (localStorage is too small for them).
+  function serialise() {
+    var c = sheet.cloneNode(true);
+    stripRuntime(c);
+    Array.prototype.forEach.call(c.querySelectorAll('img[data-local]'), function (im) {
+      im.removeAttribute('src');
+    });
+    return c.innerHTML;
+  }
+  function persist() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ build: BUILD, html: serialise() }));
+      flag.classList.add('show');
+      setTimeout(function () { flag.classList.remove('show'); }, 1400);
+    } catch (e) { /* edits stay on screen, just not persisted */ }
+  }
   var timer = null;
   sheet.addEventListener('input', function () {
     clearTimeout(timer);
-    timer = setTimeout(function () {
-      try {
-        localStorage.setItem(KEY, JSON.stringify(
-          { build: BUILD, html: sheet.innerHTML }));
-        flag.classList.add('show');
-        setTimeout(function () { flag.classList.remove('show'); }, 1400);
-      } catch (e) { /* edits stay on screen, just not persisted */ }
-    }, 600);
+    timer = setTimeout(persist, 600);
   });
 
   // Paste as plain text so pasted copy takes the sheet's styling.
@@ -881,7 +1557,12 @@ body:not(.editing) .edit-only { display: none !important; }
   document.getElementById('resetBtn').addEventListener('click', function () {
     if (!window.confirm('Discard your edits and restore the original terms?')) return;
     try { localStorage.removeItem(KEY); } catch (e) {}
-    window.location.reload();
+    var done = function () { window.location.reload(); };
+    try {
+      var del = indexedDB.deleteDatabase(IDBNAME);
+      del.onsuccess = del.onerror = del.onblocked = done;
+      setTimeout(done, 1500);
+    } catch (e) { done(); }
   });
 
   // Download the page as it now stands, edits baked into the markup, so the
@@ -905,6 +1586,25 @@ body:not(.editing) .edit-only { display: none !important; }
     if (s) { s.removeAttribute('contenteditable'); s.removeAttribute('spellcheck'); }
     var f = clone.querySelector('#savedFlag');
     if (f) { f.classList.remove('show'); }
+
+    // Activations: ship closed, with every photo baked into the file.
+    if (b) { b.classList.remove('modal-open'); if (!b.className) b.removeAttribute('class'); }
+    if (s) { stripRuntime(s); }
+    Array.prototype.forEach.call(clone.querySelectorAll('.act-shot'), function (shot) {
+      var im = shot.querySelector('.act-frame img');
+      if (im && !im.getAttribute('src')) { im.remove(); shot.classList.add('is-empty'); im = null; }
+      if (im) {
+        im.removeAttribute('data-local');
+        var cap = shot.querySelector('.act-cap');
+        im.setAttribute('alt', cap ? cap.textContent.replace(/\s+/g, ' ').trim() : '');
+      }
+    });
+    var lbx = clone.querySelector('#lightbox');
+    if (lbx) {
+      lbx.classList.remove('open', 'single');
+      var li = lbx.querySelector('img'); if (li) li.removeAttribute('src');
+    }
+    var fi = clone.querySelector('#actFile'); if (fi) fi.removeAttribute('multiple');
 
     // String.fromCharCode(10) rather than an escape: the escape does not
     // survive being written through the generator and lands as a real
@@ -956,6 +1656,320 @@ body:not(.editing) .edit-only { display: none !important; }
     startTab = 'audience';
   }
   show(startTab);
+
+  // Activations: headline cards open a full-screen gallery; each image opens
+  // full screen. In edit mode images are added by click or drag-and-drop.
+  var actPanel = sheet.querySelector('.panel[data-tab="activations"]');
+  var actFile = document.getElementById('actFile');
+  var lb = document.getElementById('lightbox');
+  var lbImg = lb.querySelector('.lb-img');
+  var lbCap = lb.querySelector('.lb-cap');
+  var lbCount = lb.querySelector('.lb-count');
+  var openModal = null, lastCard = null, lbList = [], lbIdx = 0, pickTarget = null;
+
+  function editing() { return document.body.classList.contains('editing'); }
+  function all(root, sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
+  function txt(el) { return el ? el.textContent.replace(/\s+/g, ' ').trim() : ''; }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function modals() { return all(actPanel, '.act-modal'); }
+  function filled(m) {
+    return all(m, '.act-shot').filter(function (s) {
+      var im = s.querySelector('.act-frame img');
+      return !s.classList.contains('is-empty') && im && im.getAttribute('src');
+    });
+  }
+
+  function renderCards() {
+    var wrap = actPanel.querySelector('.act-cards');
+    wrap.innerHTML = '';
+    var any = false;
+    modals().forEach(function (m, i) {
+      var shots = filled(m);
+      any = any || shots.length > 0;
+      m.classList.toggle('has-images', shots.length > 0);
+      var k = m.querySelector('.act-kicker');
+      if (k) k.textContent = 'Activation ' + pad2(i + 1);
+      var card = document.createElement('button');
+      card.type = 'button'; card.className = 'act-card'; card.setAttribute('data-open', m.id);
+      var th = document.createElement('div'); th.className = 'act-thumb';
+      if (shots.length) {
+        th.classList.add('has-img');
+        th.style.backgroundImage = 'url("' + shots[0].querySelector('img').src + '")';
+      } else {
+        var num = document.createElement('span'); num.className = 'act-thumb-num';
+        num.textContent = pad2(i + 1); th.appendChild(num);
+      }
+      var body = document.createElement('div'); body.className = 'act-card-body';
+      var kn = document.createElement('div'); kn.className = 'act-card-num';
+      kn.textContent = 'Activation ' + pad2(i + 1);
+      var t = document.createElement('div'); t.className = 'act-card-title';
+      t.textContent = txt(m.querySelector('.act-title'));
+      var meta = document.createElement('div'); meta.className = 'act-card-meta';
+      var c = document.createElement('span');
+      c.textContent = shots.length ? shots.length + (shots.length === 1 ? ' image' : ' images') : 'Visuals to follow';
+      var go = document.createElement('span'); go.className = 'go'; go.textContent = 'View \u2192';
+      meta.appendChild(c); meta.appendChild(go);
+      body.appendChild(kn); body.appendChild(t); body.appendChild(meta);
+      card.appendChild(th); card.appendChild(body);
+      wrap.appendChild(card);
+    });
+    actPanel.classList.toggle('act-none', !any);
+  }
+
+  function openAct(id, card) {
+    var m = document.getElementById(id);
+    if (!m) return;
+    lastCard = id;
+    m.classList.add('open');
+    document.body.classList.add('modal-open');
+    openModal = m;
+    var x = m.querySelector('.act-close'); if (x) x.focus();
+  }
+  function closeAct() {
+    if (!openModal) return;
+    openModal.classList.remove('open');
+    openModal = null;
+    document.body.classList.remove('modal-open');
+    renderCards();
+    var c = actPanel.querySelector('.act-card[data-open="' + lastCard + '"]');
+    if (c) c.focus();
+  }
+
+  // ---- image store (IndexedDB) — keeps photos out of localStorage
+  function idb(mode, fn) {
+    return new Promise(function (resolve, reject) {
+      var req;
+      try { req = indexedDB.open(IDBNAME, 1); } catch (e) { reject(e); return; }
+      req.onupgradeneeded = function () { req.result.createObjectStore('shots'); };
+      req.onerror = function () { reject(req.error); };
+      req.onsuccess = function () {
+        var db = req.result, r;
+        try {
+          var tx = db.transaction('shots', mode);
+          r = fn(tx.objectStore('shots'));
+          tx.oncomplete = function () { db.close(); resolve(r ? r.result : undefined); };
+          tx.onerror = tx.onabort = function () { db.close(); reject(tx.error); };
+        } catch (e) { db.close(); reject(e); }
+      };
+    });
+  }
+  function idbGet(id) { return idb('readonly', function (s) { return s.get(id); }); }
+  function idbPut(id, v) { return idb('readwrite', function (s) { return s.put(v, id); }); }
+  function idbDel(id) { return idb('readwrite', function (s) { return s.delete(id); }); }
+
+  // Downscale in the browser so a phone photo lands at a sensible size.
+  function loadImage(file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onerror = function () { reject(fr.error); };
+      fr.onload = function () {
+        var im = new Image();
+        im.onerror = function () { reject(new Error('Not an image')); };
+        im.onload = function () {
+          var max = 1800, w = im.naturalWidth, h = im.naturalHeight;
+          var s = Math.min(1, max / Math.max(w, h));
+          var cv = document.createElement('canvas');
+          cv.width = Math.round(w * s); cv.height = Math.round(h * s);
+          var cx = cv.getContext('2d');
+          cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height);
+          cx.drawImage(im, 0, 0, cv.width, cv.height);
+          resolve(cv.toDataURL('image/jpeg', 0.85));
+        };
+        im.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+
+  function niceName(file, fallback) {
+    var n = (file.name || '').replace(/\.[^.]+$/, '').replace(/[_\-]+/g, ' ').trim();
+    if (!/[a-z]{3,}/i.test(n) || /^(img|dsc|pxl|screenshot|screen shot|photo|image|whatsapp|unnamed)\b/i.test(n)) return fallback;
+    return n;
+  }
+
+  function newSlot(grid) {
+    var m = grid.closest('.act-modal');
+    var fig = document.createElement('figure');
+    fig.className = 'act-shot is-empty';
+    fig.setAttribute('data-shot', 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
+    var proto = grid.querySelector('.act-shot');
+    fig.innerHTML = proto ? proto.innerHTML : '';
+    var img = fig.querySelector('.act-frame img'); if (img) img.remove();
+    var cap = fig.querySelector('.act-cap');
+    if (!cap) { cap = document.createElement('figcaption'); cap.className = 'act-cap'; fig.appendChild(cap); }
+    cap.textContent = txt(m.querySelector('.act-title'));
+    grid.insertBefore(fig, grid.querySelector('.act-add'));
+    return fig;
+  }
+
+  function setShot(shot, url, file) {
+    var frame = shot.querySelector('.act-frame');
+    var img = frame.querySelector('img');
+    if (!img) { img = document.createElement('img'); frame.insertBefore(img, frame.firstChild); }
+    img.setAttribute('src', url);
+    img.setAttribute('data-local', '1');
+    img.setAttribute('contenteditable', 'false');
+    img.setAttribute('draggable', 'false');
+    shot.classList.remove('is-empty');
+    var cap = shot.querySelector('.act-cap');
+    var title = txt(shot.closest('.act-modal').querySelector('.act-title'));
+    if (cap && (!txt(cap) || txt(cap) === title)) cap.textContent = niceName(file, title);
+    img.alt = txt(cap);
+    return idbPut(shot.getAttribute('data-shot'), url).catch(function () {});
+  }
+
+  function placeFiles(shot, files) {
+    files = files.filter(function (f) { return /^image\//.test(f.type); });
+    if (!files.length) return;
+    var grid = shot.closest('.act-grid');
+    var targets = [shot], cur = shot;
+    for (var i = 1; i < files.length; i++) {
+      var next = null, sib = cur.nextElementSibling;
+      while (sib && sib.classList.contains('act-shot')) {
+        if (sib.classList.contains('is-empty')) { next = sib; break; }
+        sib = sib.nextElementSibling;
+      }
+      cur = next || newSlot(grid);
+      targets.push(cur);
+    }
+    Promise.all(files.map(function (f, i) {
+      return loadImage(f).then(function (url) { return setShot(targets[i], url, f); }, function () {});
+    })).then(function () { renderCards(); persist(); });
+  }
+
+  function pick(shot, multi) {
+    pickTarget = shot;
+    actFile.multiple = !!multi;
+    actFile.value = '';
+    actFile.click();
+  }
+  actFile.addEventListener('change', function () {
+    var files = Array.prototype.slice.call(actFile.files || []);
+    if (pickTarget && files.length) placeFiles(pickTarget, files);
+    pickTarget = null;
+  });
+
+  function clearShot(shot) {
+    var img = shot.querySelector('.act-frame img'); if (img) img.remove();
+    shot.classList.add('is-empty');
+    idbDel(shot.getAttribute('data-shot')).catch(function () {});
+    renderCards(); persist();
+  }
+  function removeSlot(shot) {
+    idbDel(shot.getAttribute('data-shot')).catch(function () {});
+    shot.remove();
+    renderCards(); persist();
+  }
+
+  // ---- full-screen image viewer
+  function lbShow() {
+    var s = lbList[lbIdx];
+    lbImg.src = s.querySelector('.act-frame img').src;
+    lbImg.alt = txt(s.querySelector('.act-cap'));
+    lbCap.textContent = txt(s.querySelector('.act-cap'));
+    lbCount.textContent = (lbIdx + 1) + ' / ' + lbList.length;
+    lb.classList.toggle('single', lbList.length < 2);
+  }
+  function lbOpen(shot) {
+    lbList = filled(shot.closest('.act-modal'));
+    lbIdx = Math.max(0, lbList.indexOf(shot));
+    if (!lbList.length) return;
+    lbShow();
+    lb.classList.add('open');
+    lb.querySelector('.lb-close').focus();
+  }
+  function lbClose() { lb.classList.remove('open'); lbImg.removeAttribute('src'); }
+  function lbStep(d) { lbIdx = (lbIdx + d + lbList.length) % lbList.length; lbShow(); }
+  lb.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.closest('.lb-prev')) lbStep(-1);
+    else if (t.closest('.lb-next')) lbStep(1);
+    else if (t.closest('.lb-close') || t === lb || t.classList.contains('lb-stage')) lbClose();
+  });
+
+  // ---- clicks inside the Activations panel
+  actPanel.addEventListener('click', function (e) {
+    var t = e.target;
+    var card = t.closest('.act-card');
+    if (card) { openAct(card.getAttribute('data-open')); return; }
+    if (t.closest('.act-close')) { closeAct(); return; }
+    if (openModal && t === openModal) { closeAct(); return; }
+    var tool = t.closest('[data-do]');
+    if (tool) {
+      e.preventDefault();
+      var s = tool.closest('.act-shot'), d = tool.getAttribute('data-do');
+      if (d === 'pick') pick(s, s.classList.contains('is-empty'));
+      else if (d === 'remove-img') clearShot(s);
+      else if (d === 'remove-slot') removeSlot(s);
+      return;
+    }
+    var add = t.closest('.act-add');
+    if (add) { pick(newSlot(add.closest('.act-grid')), true); return; }
+    if (t.closest('.act-cap')) return;
+    var shot = t.closest('.act-shot');
+    if (!shot) return;
+    if (!shot.classList.contains('is-empty')) lbOpen(shot);
+    else if (editing()) pick(shot, true);
+  });
+
+  // Drag and drop (edit mode). Without this the editable sheet would swallow
+  // a dropped photo as an inline image.
+  actPanel.addEventListener('dragover', function (e) {
+    if (!e.dataTransfer || Array.prototype.indexOf.call(e.dataTransfer.types || [], 'Files') < 0) return;
+    e.preventDefault();
+    var s = e.target.closest && e.target.closest('.act-shot');
+    all(actPanel, '.drag-over').forEach(function (x) { if (x !== s) x.classList.remove('drag-over'); });
+    if (s && editing()) s.classList.add('drag-over');
+  });
+  actPanel.addEventListener('dragleave', function (e) {
+    var s = e.target.closest && e.target.closest('.act-shot');
+    if (s && !s.contains(e.relatedTarget)) s.classList.remove('drag-over');
+  });
+  actPanel.addEventListener('drop', function (e) {
+    if (!e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return;
+    e.preventDefault();
+    all(actPanel, '.drag-over').forEach(function (x) { x.classList.remove('drag-over'); });
+    if (!editing()) return;
+    var files = Array.prototype.slice.call(e.dataTransfer.files);
+    var s = e.target.closest('.act-shot');
+    if (!s) {
+      var mm = e.target.closest('.act-modal') || openModal;
+      var grid = mm && mm.querySelector('.act-grid');
+      if (!grid) return;
+      s = grid.querySelector('.act-shot.is-empty') || newSlot(grid);
+    }
+    placeFiles(s, files);
+  });
+
+  // Titles and captions are single lines (the sheet is the editing host, so
+  // find where the caret is rather than relying on the event target).
+  sheet.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var sel = window.getSelection(), n = sel && sel.anchorNode;
+    var el = n && (n.nodeType === 1 ? n : n.parentElement);
+    if (el && el.closest && (el.closest('.act-cap') || el.closest('.act-title'))) e.preventDefault();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (lb.classList.contains('open')) {
+      if (e.key === 'Escape') { e.preventDefault(); lbClose(); }
+      else if (e.key === 'ArrowLeft') lbStep(-1);
+      else if (e.key === 'ArrowRight') lbStep(1);
+      return;
+    }
+    if (openModal && e.key === 'Escape') { e.preventDefault(); closeAct(); }
+  });
+
+  // Fill in images saved while editing, then draw the cards.
+  renderCards();
+  Promise.all(all(sheet, '.act-frame img[data-local]').map(function (img) {
+    if (img.getAttribute('src')) return null;
+    var shot = img.closest('.act-shot');
+    var drop = function () { img.remove(); shot.classList.add('is-empty'); };
+    return idbGet(shot.getAttribute('data-shot')).then(function (url) {
+      if (url) img.setAttribute('src', url); else drop();
+    }, drop);
+  })).then(renderCards);
 
 })();
 </script>
